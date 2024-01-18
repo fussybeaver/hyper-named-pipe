@@ -1,0 +1,17 @@
+[package]
+name = "hyper-named-pipe"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+hyper = { version = "1.1", features = ["full"] }
+hyper-util = { version = "0.1.2", features = ["http1", "client-legacy", "tokio"] }
+pin-project-lite = { version = "0.2.8" }
+winapi = { version = "0.3.9", features = ["winerror"] }
+tokio = { version = "1.35", features = ["net"] }
+tower-service = { version = "0.3" }
+
+[dev-dependencies]
+http-body-util = "0.1.0"
+tokio = { version = "1.35", features = ["full"] }
+thiserror = "1"
