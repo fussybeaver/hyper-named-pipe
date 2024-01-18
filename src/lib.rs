@@ -1,3 +1,4 @@
+use hex::FromHex;
 use hyper::rt::ReadBufCursor;
 use hyper_util::client::legacy::connect::{Connected, Connection};
 use hyper_util::rt::TokioIo;
@@ -15,6 +16,8 @@ use std::task::{Context, Poll};
 use std::time::Duration;
 
 use winapi::shared::winerror;
+
+pub const NAMED_PIPE_SCHEME: &str = "net.pipe";
 
 pin_project! {
     pub struct NamedPipeStream {
@@ -104,7 +107,21 @@ impl tower_service::Service<hyper::Uri> for NamedPipeConnector {
                 )),
             }?;
 
-            Ok(NamedPipeStream::connect(&destination.to_string()).await?)
+            if let Some(host) = destination.host() {
+                let bytes = Vec::from_hex(host).map_err(|_| {
+                    io::Error::new(
+                        io::ErrorKind::InvalidInput,
+                        "invalid URL, host must be a hex-encoded path",
+                    )
+                })?;
+
+                Ok(NamedPipeStream::connect(String::from_utf8_lossy(&bytes).into_owned()).await?)
+            } else {
+                Err(io::Error::new(
+                    io::ErrorKind::InvalidInput,
+                    format!("Invalid uri {:?}", destination),
+                ))
+            }
         };
 
         Box::pin(fut)
@@ -116,5 +133,3 @@ impl Connection for NamedPipeStream {
         Connected::new()
     }
 }
-
-const NAMED_PIPE_SCHEME: &str = "net.pipe";

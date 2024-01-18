@@ -4,7 +4,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-hyper = { version = "1.1", features = ["full"] }
+hex = "0.4"
+hyper = { version = "1.1", features = ["client", "http1"] }
 hyper-util = { version = "0.1.2", features = ["http1", "client-legacy", "tokio"] }
 pin-project-lite = { version = "0.2.8" }
 winapi = { version = "0.3.9", features = ["winerror"] }
@@ -13,5 +14,6 @@ tower-service = { version = "0.3" }
 
 [dev-dependencies]
 http-body-util = "0.1.0"
-tokio = { version = "1.35", features = ["full"] }
+hyper = { version = "1.1", features = ["client", "server", "http1"] }
+tokio = { version = "1.35", features = ["macros"] }
 thiserror = "1"
