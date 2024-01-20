@@ -1,6 +1,13 @@
 [package]
 name = "hyper-named-pipe"
+description = "Hyper client bindings for Windows Named Pipes"
 version = "0.1.0"
+license = "Apache-2.0"
+homepage = "https://github.com/fussybeaver/hyper-named-pipe"
+repository = "https://github.com/fussybeaver/hyper-named-pipe"
+documentation = "https://docs.rs/hyper-named-pipe"
+readme = "README.md"
+keywords = ["hyper", "windows", "named", "pipes", "http"]
 edition = "2021"
 
 [dependencies]
