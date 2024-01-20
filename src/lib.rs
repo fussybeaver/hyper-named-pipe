@@ -19,7 +19,8 @@
 //!
 //! # Usage
 //!
-//! Ensure host's are hex-encoded when passed into `HyperUri` as this will bypass validation.
+//! Please ensure hostname's are hex-encoded when passed into `http::Uri`, as we need to bypass
+//! `http::Uri`'s restrictive validation that will not accept a standard named pipe.
 //!
 //! ```rust,no_run
 //! # use http_body_util::{BodyExt, Full};
@@ -41,6 +42,14 @@
 //! async move {
 //!   client.get(url).await.expect("Unable to fetch URL with Hyper client");
 //! };
+//! ```
+//!
+//! # Tests
+//!
+//! It's possible to run the unit test on a unix platform using the [`cross`](https://github.com/cross-rs/cross) helper:
+//!
+//! ```bash
+//! cross test --target i686-pc-windows-gnu
 //! ```
 //!
 //!
@@ -75,11 +84,11 @@ use std::time::Duration;
 
 use winapi::shared::winerror;
 
-/// TODO
+/// The scheme part of a uri that denotes a named pipe connection
 pub const NAMED_PIPE_SCHEME: &str = "net.pipe";
 
 pin_project! {
-    /// TODO
+    /// The Hyper plumbing to read/write to an underlying Tokio Named Pipe Client interface
     pub struct NamedPipeStream {
         #[pin]
         io: NamedPipeClient,
@@ -87,7 +96,7 @@ pin_project! {
 }
 
 impl NamedPipeStream {
-    /// TODO
+    /// The internal connection implementation to initialize a Tokio Named Pipe Client interface
     pub async fn connect<A>(addr: A) -> Result<NamedPipeStream, io::Error>
     where
         A: AsRef<Path> + AsRef<OsStr>,
@@ -146,7 +155,21 @@ impl hyper::rt::Write for NamedPipeStream {
 }
 
 #[derive(Clone, Copy, Debug)]
-/// TODO
+/// The end-user interface to initialize a Hyper Client
+///
+/// # Example
+///
+/// ```rust
+/// # use http_body_util::{BodyExt, Full};
+/// # use hyper::body::Bytes;
+/// # use hyper_named_pipe::NamedPipeConnector;
+/// # use hyper_util::{
+/// #     client::legacy::Client,
+/// #     rt::{TokioExecutor, TokioIo},
+/// # };
+/// let builder = Client::builder(TokioExecutor::new());
+/// let client: Client<NamedPipeConnector, Full<Bytes>> = builder.build(NamedPipeConnector);
+/// ```
 pub struct NamedPipeConnector;
 
 impl tower_service::Service<hyper::Uri> for NamedPipeConnector {
