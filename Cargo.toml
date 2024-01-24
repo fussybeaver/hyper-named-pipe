@@ -1,0 +1,26 @@
+[package]
+name = "hyper-named-pipe"
+description = "Hyper client bindings for Windows Named Pipes"
+version = "0.1.0"
+license = "Apache-2.0"
+homepage = "https://github.com/fussybeaver/hyper-named-pipe"
+repository = "https://github.com/fussybeaver/hyper-named-pipe"
+documentation = "https://docs.rs/hyper-named-pipe"
+readme = "README.md"
+keywords = ["hyper", "windows", "named", "pipes", "http"]
+edition = "2021"
+
+[dependencies]
+hex = "0.4"
+hyper = { version = "1.1", features = ["client", "http1"] }
+hyper-util = { version = "0.1.2", features = ["http1", "client-legacy", "tokio"] }
+pin-project-lite = { version = "0.2.8" }
+winapi = { version = "0.3.9", features = ["winerror"] }
+tokio = { version = "1.35", features = ["net"] }
+tower-service = { version = "0.3" }
+
+[dev-dependencies]
+http-body-util = "0.1.0"
+hyper = { version = "1.1", features = ["client", "server", "http1"] }
+tokio = { version = "1.35", features = ["macros"] }
+thiserror = "1"
