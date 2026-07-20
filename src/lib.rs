@@ -82,7 +82,8 @@ use std::pin::Pin;
 use std::task::{Context, Poll};
 use std::time::Duration;
 
-use winapi::shared::winerror;
+/// The windows error constant for a busy named pipe.
+const ERROR_PIPE_BUSY: u32 = 231u32;
 
 /// The scheme part of a uri that denotes a named pipe connection
 pub const NAMED_PIPE_SCHEME: &str = "net.pipe";
@@ -106,7 +107,7 @@ impl NamedPipeStream {
         let client = loop {
             match opts.open(&addr) {
                 Ok(client) => break client,
-                Err(e) if e.raw_os_error() == Some(winerror::ERROR_PIPE_BUSY as i32) => (),
+                Err(e) if e.raw_os_error() == Some(ERROR_PIPE_BUSY as i32) => (),
                 Err(e) => return Err(e),
             };
 
