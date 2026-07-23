@@ -1,6 +1,6 @@
 [![crates.io](https://img.shields.io/crates/v/hyper-named-pipe.svg)](https://crates.io/crates/hyper-named-pipe)
 [![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/license/apache-2.0)
-[![AppVeyor](https://ci.appveyor.com/api/projects/status/n5khebyfae0u1sbv/branch/master?svg=true)](https://ci.appveyor.com/project/fussybeaver/hyper-named-pipe)
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/7ogj03ayge78cl2t/branch/master?svg=true)](https://ci.appveyor.com/project/fussybeaver/hyper-named-pipe)
 [![docs](https://docs.rs/hyper-named-pipe/badge.svg)](https://docs.rs/hyper-named-pipe)
 
 ## Hyper-named-pipe: Hyper client bindings for Windows Named Pipes
